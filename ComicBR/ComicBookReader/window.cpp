@@ -26,3 +26,11 @@ Button::Button(float x, float y, float width, float height, std::string text){
 void Button::render(sf::RenderWindow target){
     target.draw(this->shape);
 }
+
+bool Button::is_pressed(float x, float y){
+    sf::Rect<float> rect = sf::Rect<float>(shape.getPosition(),shape.getSize());
+    return rect.contains(x,y);
+}
+void Button::set_text(std::string ntext){
+    this->text.setString(ntext);
+}

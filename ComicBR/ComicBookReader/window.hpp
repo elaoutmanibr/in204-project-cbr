@@ -14,19 +14,23 @@
 #include <iostream>
 class Button
 {
-public:
+private:
     sf::RectangleShape shape;
     sf::Text text;
-    sf::Color color;
     
 public:
     Button(float x, float y, float width, float height, std::string text);
     ~Button(){};
     void render(sf::RenderWindow target);
-    
-   
+    bool is_pressed(float x, float y);
+    sf::RectangleShape get_shape(){return shape;};
+    sf::Text get_text(){return text;};
+    void set_text(std::string ntext);
     
    
 };
+
+
+
 
 #endif /* window_hpp */
