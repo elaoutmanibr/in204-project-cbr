@@ -8,38 +8,15 @@
 
 #ifndef display_hpp
 #define display_hpp
-
+#include "imageProcess.hpp"
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "unarr.h"
-
+#include "archivereader.hpp"
 #include <opencv2/opencv.hpp>
 
-class CV_IMAGE {
-public:
-    CV_IMAGE(int n, cv::Mat img){
-        num = n;
-        image = img;
-    }
-    int get_num(){
-        return num;
-    }
-    cv::Mat get_img(){
-        return image;
-    }
-    sf::Image to_sfml(){
-        sf::Image img;
-        cv::Mat frameRGBA;
-        
-        cv::cvtColor(image, frameRGBA, cv::COLOR_BGR2RGBA);
-        img.create(frameRGBA.cols, frameRGBA.rows, frameRGBA.ptr());
-        return img;
-    }
-private:
-    int num;
-    cv::Mat image;
-};
+
 
 
 class IMAGE {
@@ -94,6 +71,9 @@ public:
         mg.create(20, 20, sf::Color::Black);
         return mg  ;
     }
+    void load_one(int page, Archive arch);
+    void load(int page, Archive arch);
+    void clean(int page);
     
 private:
     int max_size;
