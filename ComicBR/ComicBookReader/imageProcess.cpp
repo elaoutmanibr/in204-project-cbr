@@ -1,3 +1,4 @@
+/*
 bool ImageCV::autoAdjustImage(cv::Mat &input_image, cv::Mat &output_image, int image_type_flag) {
 
     if (image_type_flag == 0) autoAdjustImageText(input_image, output_image);
@@ -9,11 +10,12 @@ bool ImageCV::autoAdjustImage(cv::Mat &input_image, cv::Mat &output_image, int i
     }
     return true;
 }
-
+/*
 bool ImageCV::autoAdjustImageText(cv::Mat &input_image, cv::Mat &output_image)
 {
     cv::Mat temp_image;
     /****Transfer color image into gray image****/
+/*
     cv::cvtColor(input_image, temp_image, CV_RGB2GRAY);
 
 
@@ -31,12 +33,13 @@ bool ImageCV::autoAdjustImageText(cv::Mat &input_image, cv::Mat &output_image)
     //if slow, change ADAPTIVE_THRESH_GAUSSIAN_C into ADAPTIVE_THRESH_MEAN_C
     //Could use GUI to change blocksize.
 
-
+/*
     cv::cvtColor(output_image, output_image, CV_GRAY2RGB);
 
     return true;
 }
 
+/*
 bool ImageCV::autoAdjustImageGraphic(cv::Mat &input_image, cv::Mat &output_image)
 {
 
@@ -44,12 +47,13 @@ bool ImageCV::autoAdjustImageGraphic(cv::Mat &input_image, cv::Mat &output_image
 
     /****smooth the image****/
     //could be slow by using GaussianBlur, could be changed to other linear filter.
+    /*
     cv::GaussianBlur(input_image, temp_image, cv::Size(3, 3), 0, 0);
 
     /****autojustment by equilize Hist****/
     /*
         std::vector<cv::Mat> channels;
-        split(input_image, channels); 		//Split input_image into 3 channels RGB
+        split(input_image, channels);       //Split input_image into 3 channels RGB
         //equilize Hist and convert bgr to rgb
         cv::Mat channel_temp;
         cv::equalizeHist(channels[0], channel_temp);
@@ -60,13 +64,14 @@ bool ImageCV::autoAdjustImageGraphic(cv::Mat &input_image, cv::Mat &output_image
         */
 
     /****autojustment by Laplace filter (Increasing local contrast)****/
+    /*
     cv::Mat kernel = (cv::Mat_<int>(3, 3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
     cv::filter2D(temp_image, temp_image, temp_image.depth(), kernel);
     cv::cvtColor(temp_image, temp_image, CV_BGR2RGB);
     output_image = temp_image;
     return true;
 }
-
+*/
 sf::Image ImageCV::to_sfml(){
         sf::Image img;
         cv::Mat frameRGBA;

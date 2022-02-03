@@ -3,6 +3,38 @@
 #include <vector>
 #include "unarr.h"
 
+
+
+class CV_IMAGE {
+public:
+    CV_IMAGE(int n, cv::Mat img){
+        num = n;
+        image = img;
+    }
+    int get_num(){
+        return num;
+    }
+    cv::Mat get_img(){
+        return image;
+    }
+    sf::Image to_sfml(){
+        sf::Image img;
+        cv::Mat frameRGBA;
+        cv::cvtColor(image, frameRGBA, cv::COLOR_BGR2RGBA);
+        img.create(frameRGBA.cols, frameRGBA.rows, frameRGBA.ptr());
+        return img;
+    }
+    void cv_resize(){
+        cv::Mat resized;
+        cv::resize(image, resized, cv::Size(), 0.5, 0.5, cv::INTER_LINEAR);
+        image = resized;
+    }
+private:
+    int num;
+    cv::Mat image;
+};
+
+/*
 class ImageCV {
 public:
     ImageCV(int n, cv::Mat img){
@@ -48,4 +80,4 @@ private:
     int num;
     sf::Image image;
 };
-
+*/
