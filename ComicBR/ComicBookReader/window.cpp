@@ -34,3 +34,52 @@ bool Button::is_pressed(float x, float y){
 void Button::set_text(std::string ntext){
     this->text.setString(ntext);
 }
+
+
+
+std::string TextBox::get_text(){
+    sf::Font font;
+    font.loadFromFile(resourcePath() +"sansation.ttf");
+    sf::RenderWindow gotopagewind(sf::VideoMode(x, y), this->text);
+    std::string typed = "";
+    while (gotopagewind.isOpen()){
+            sf::Event event;
+            while (gotopagewind.pollEvent(event))
+            {
+                // Close window: exit
+                if (event.type == sf::Event::Closed) {
+                    gotopagewind.close();
+                    return (std::string)"none";
+                    
+                }
+
+                // Escape pressed: exit
+                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+                    gotopagewind.close();
+                    return (std::string)"none";
+                    
+                }
+                if (event.type == sf::Event::TextEntered) {
+                    if (event.text.unicode == '\b'){
+                        if(!typed.empty())
+                            typed.pop_back();}
+                    else if (event.text.unicode == '\n'){
+                        //page = std::stoi(npage);
+                        gotopagewind.close();
+                        return typed;
+                    }
+                    else if (event.text.unicode && event.text.unicode < 123)
+                        typed+=static_cast<char>(event.text.unicode);
+                    
+                }
+            }
+            
+            sf::Text npg(typed.data(), font, 30);
+            npg.setPosition(50.f,50.f);
+            gotopagewind.clear();
+            gotopagewind.draw(npg);
+            // Update the window
+            gotopagewind.display();
+        }
+    return (std::string)"none";
+}

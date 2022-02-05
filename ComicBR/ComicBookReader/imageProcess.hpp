@@ -3,6 +3,8 @@
 #include <vector>
 #include "unarr.h"
 
+#ifndef imageprocess_hpp
+#define imageprocess_hpp
 
 
 class CV_IMAGE {
@@ -26,7 +28,7 @@ public:
     }
     void cv_resize(){
         cv::Mat resized;
-        cv::resize(image, resized, cv::Size(), 0.5, 0.5, cv::INTER_LINEAR);
+        cv::resize(image, resized, cv::Size(), 0.9, 0.9, cv::INTER_LINEAR);
         image = resized;
     }
 private:
@@ -81,3 +83,4 @@ private:
     sf::Image image;
 };
 */
+#endif

@@ -56,8 +56,7 @@ int main(int, char const**)
     //the path to the file
     std::string path = "Users/youssefbencheikh/Desktop/Archive.cbz";
     Archive arch = Archive();
-    if(arch.loadArchivedFiles(path)) std::cout<<"hey\n";
-    std::cout<<"total pages: "<<arch.getPageNumTotal()<<"\n";
+    arch.loadArchivedFiles(path);
     cv::Mat a_image;
     arch.loadOneImage(2,a_image);
     
@@ -70,18 +69,11 @@ int main(int, char const**)
     cache.load(page,arch);
     cache.load(2,arch);
     cache.load(3,arch);
-    /*
-    cv::Mat resized;
     
-    float scale = (float)(window.getSize().x)/(float)(a_image.size().width);
-    std::cout<<"here: "<<sf::VideoMode::getDesktopMode().height<<"\n";
-    std::cout<<"here: "<<a_image.size().height<<"\n";
-    std::cout<<"here: "<<scale<<"\n";
-    resize(a_image, resized, Size(), 0.5, 0.5, INTER_LINEAR);
-*/
     
     sf::Texture texture;
-    // Start the game loop
+    
+    // Start the loop
     while (window.isOpen())
     {
         
@@ -127,51 +119,24 @@ int main(int, char const**)
                     }
                 }
                 if (go_to_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
-                    int oldpage = page;
-                    sf::RenderWindow gotopagewind(sf::VideoMode(400, 250), "Go to page:");
-                    sf::Text sub_text("page:", font, 50);
-                    sub_text.setFillColor(sf::Color::White);
-                    std::string npage = "";
-                    while (gotopagewind.isOpen()){
-                            sf::Event event;
-                            while (gotopagewind.pollEvent(event))
-                            {
-                                // Close window: exit
-                                if (event.type == sf::Event::Closed) {
-                                    page = oldpage;
-                                    gotopagewind.close();
-                                    
-                                }
-
-                                // Escape pressed: exit
-                                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
-                                    page = oldpage;
-                                    gotopagewind.close();
-                                    
-                                }
-                                if (event.type == sf::Event::TextEntered) {
-                                    if (event.text.unicode == '\b'){
-                                        if(!npage.empty())
-                                            npage.pop_back();}
-                                    else if (event.text.unicode == '\n'){
-                                        page = std::stoi(npage);
-                                        gotopagewind.close();
-                                    }
-                                    else if (47 < event.text.unicode && event.text.unicode < 58)
-                                        npage+=static_cast<char>(event.text.unicode);
-                                    
-                                }
-                            }
-                            
-                            sf::Text npg(npage.data(), font, 50);
-                            npg.setPosition(100.f,50.f);
-                            gotopagewind.clear();
-                            // Draw the string
-                            gotopagewind.draw(sub_text);
-                            gotopagewind.draw(npg);
-                            // Update the window
-                            gotopagewind.display();
-                        }
+                    TextBox txtbx = TextBox(500,200,"go to page:");
+                    std::string npage = txtbx.get_text();
+                    if (npage.compare("none")){
+                        page = std::stoi(npage);
+                    }
+                    if (!texture.loadFromImage(cache.getpage(page))) {
+                        return EXIT_FAILURE;
+                    }
+                }
+                if (open_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                    TextBox txtbx = TextBox(1000,200,"enter path:");
+                    std::string npath = txtbx.get_text();
+                    if (npath.compare("none")){
+                        path = npath;
+                        arch.loadArchivedFiles(path);
+                        page=1;
+                        cache.load(page,arch);
+                    }
                     if (!texture.loadFromImage(cache.getpage(page))) {
                         return EXIT_FAILURE;
                     }

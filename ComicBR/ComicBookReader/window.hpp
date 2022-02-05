@@ -30,6 +30,21 @@ public:
    
 };
 
+class TextBox
+{
+public:
+    TextBox(int x, int y, std::string text){
+        this->x = x;
+        this->y = y;
+        this->text = text;
+    }
+public:
+    std::string get_text();
+private:
+    int x; int y;
+    std::string text;;
+   
+};
 
 
 
