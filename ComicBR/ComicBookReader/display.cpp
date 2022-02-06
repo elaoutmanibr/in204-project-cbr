@@ -8,27 +8,52 @@
 
 #include "display.hpp"
 #include "imageProcess.hpp"
-void CACHE::clean(int page){
-    std::vector<IMAGE> nv_images;
-    for(IMAGE image:images){
-        if (image.get_num()<(page+6) && image.get_num()>(page-3)){
-            nv_images.push_back(image);
-        }
-    }
-    images = nv_images;
-}
 
-void CACHE::load_one(int page, Archive arch){
+void IMAGE::load_to(int page, Archive arch){
     cv::Mat a_image;
     arch.loadOneImage(page,a_image);
     CV_IMAGE image = CV_IMAGE(page,a_image);
     image.cv_resize();
     sf::Image sf_img = image.to_sfml();
     IMAGE img = IMAGE(page,sf_img);
-    add(img);
+}
+void CACHE::clean(int page){
+    std::vector<IMAGE> nv_images;
+    for(IMAGE image:images){
+        if (image.get_num()<(page+2) && image.get_num()>(page-2)){
+            nv_images.push_back(image);
+        }
+    }
+    images.clear();
+    images = nv_images;
+}
+
+IMAGE load_one(int page, Archive arch){
+        cv::Mat a_image;
+        arch.loadOneImage(page,a_image);
+        CV_IMAGE image = CV_IMAGE(page,a_image);
+        image.cv_resize();
+        sf::Image sf_img = image.to_sfml();
+        IMAGE img = IMAGE(page,sf_img);
+        return img;
 }
 
 void CACHE::load(int page, Archive arch){
     clean(page);
-    load_one(page, arch);
+    IMAGE current; IMAGE previous; IMAGE next;
+    auto future = std::async(load_one,page,arch);
+    current = future.get();
+    current = load_one(page, arch);
+    if (page+1<arch.getPageNumTotal()){
+        auto nfuture = std::async(load_one,page+1,arch);
+        next = nfuture.get();
+        //next = load_one(page+1, arch);
+    }
+    if (page-1>0){
+        auto pfuture = std::async(load_one,page-1,arch);
+        previous = pfuture.get();
+        //previous = load_one(page-1, arch);
+    }
+    add(current); add(next); add(previous);
 }
+
