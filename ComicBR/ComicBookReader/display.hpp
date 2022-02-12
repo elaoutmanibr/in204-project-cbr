@@ -45,11 +45,14 @@ private:
 
 class CACHE {
 public:
-    CACHE(int size){
-        max_size = size;
-        std::vector<sf::Image> images;
-    }
     
+    CACHE(){}
+    CACHE(CACHE &cache){
+        images = cache.images;
+    }
+    ~CACHE(){
+        images.clear();
+    }
     bool isloaded(int num){
         for(IMAGE image:images){
             if(image.get_num()==num){
@@ -78,10 +81,9 @@ public:
     void clean(int page);
     
 private:
-    int max_size;
     std::vector<IMAGE> images;
 };
 
-IMAGE load_one(int page, Archive arch);
+void load_one(int page, Archive arch, IMAGE * sf_image);
 
 #endif /* display_hpp */

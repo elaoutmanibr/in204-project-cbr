@@ -52,10 +52,12 @@ bool Archive::loadOneImage(int num, cv::Mat &a_image){
     if (num > page_num_total || num < 1) return false;
     if(!ar_parse_entry_at(ar, offset_cache[num-1])) return false;
     size_t size = ar_entry_get_size(ar);
-    std::cout<<ar_entry_get_name(ar)<<'\n';
+    //std::cout<<ar_entry_get_name(ar)<<'\n';
     read_buffer.resize(size);
     unsigned char *buffer = &read_buffer[0];
     if(!ar_entry_uncompress(ar, buffer, size)) return false;
         a_image = cv::imdecode(read_buffer, cv::IMREAD_COLOR);
     return true;
 }
+
+

@@ -48,5 +48,5 @@ std::string resourcePath(void)
 
     [pool drain];
 
-    return rpath;
+    return "/Users/youssefbencheikh/Desktop/in204-project-cbr/ComicBR/ComicBookReader/";
 }
