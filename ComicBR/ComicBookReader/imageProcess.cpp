@@ -21,14 +21,14 @@ bool ImageCV::autoAdjustImageText(cv::Mat &input_image, cv::Mat &output_image)
 
     /****smooth the image****/
     //could be slow by using GaussianBlur, could be changed to other linear filter.
-    cv::GaussianBlur(temp_image, temp_image, cv::Size(5,5), 0, 0);
+    //cv::GaussianBlur(temp_image, temp_image, cv::Size(5,5), 0, 0);
     //smooth path is included in adaptiveThreshold
 
-    cv::equalizeHist(temp_image, temp_image);
+    //cv::equalizeHist(temp_image, temp_image);
 
 
     /****Auto Threhold divise into white(paper) and black(text)****/
-    cv::adaptiveThreshold(temp_image, output_image, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 21, 10);
+    //cv::adaptiveThreshold(temp_image, output_image, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 21, 10);
     //int blocksize can only be impaire
     //if slow, change ADAPTIVE_THRESH_GAUSSIAN_C into ADAPTIVE_THRESH_MEAN_C
     //Could use GUI to change blocksize.
@@ -72,11 +72,11 @@ bool ImageCV::autoAdjustImageGraphic(cv::Mat &input_image, cv::Mat &output_image
     return true;
 }
 */
-sf::Image ImageCV::to_sfml(){
-        sf::Image img;
-        cv::Mat frameRGBA;
+//~ sf::Image ImageCV::to_sfml(){
+        //~ sf::Image img;
+        //~ cv::Mat frameRGBA;
         
-        cv::cvtColor(image, frameRGBA, cv::COLOR_BGR2RGBA);
-        img.create(frameRGBA.cols, frameRGBA.rows, frameRGBA.ptr());
-        return img;
-    }
+        //~ cv::cvtColor(image, frameRGBA, cv::COLOR_BGR2RGBA);
+        //~ img.create(frameRGBA.cols, frameRGBA.rows, frameRGBA.ptr());
+        //~ return img;
+    //~ }

@@ -7,7 +7,7 @@
 //
 
 #include "display.hpp"
-#include "imageProcess.hpp"
+
 void CACHE::clean(int page){
     std::vector<IMAGE> nv_images;
     for(IMAGE image:images){
