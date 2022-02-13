@@ -31,6 +31,7 @@ public:
     std::vector<size_t> get_offset_cache(){
         return offset_cache;
     }
+    
 public:
     ar_archive * ar_open_any_archive(ar_stream *stream, const char *fileext);
     std::string archive_path;
@@ -39,6 +40,7 @@ public:
     ar_archive *ar = NULL;
     int page_num_total;
     std::vector<size_t> offset_cache;
+    
 };
 
 #endif /* archivereader_hpp */

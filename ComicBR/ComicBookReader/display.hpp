@@ -15,12 +15,14 @@
 #include "unarr.h"
 #include "archivereader.hpp"
 #include <opencv2/opencv.hpp>
-
+#include <thread>
+#include <future>
 
 
 
 class IMAGE {
 public:
+    IMAGE(){};
     IMAGE(int n, sf::Image img){
         num = n;
         image = img;
@@ -35,6 +37,7 @@ public:
     sf::Image get_img(){
         return image;
     }
+    void load_to(int page, Archive arch);
 private:
     int num;
     sf::Image image;
@@ -42,11 +45,14 @@ private:
 
 class CACHE {
 public:
-    CACHE(int size){
-        max_size = size;
-        std::vector<sf::Image> images;
-    }
     
+    CACHE(){}
+    CACHE(CACHE &cache){
+        images = cache.images;
+    }
+    ~CACHE(){
+        images.clear();
+    }
     bool isloaded(int num){
         for(IMAGE image:images){
             if(image.get_num()==num){
@@ -71,13 +77,13 @@ public:
         mg.create(20, 20, sf::Color::Black);
         return mg  ;
     }
-    void load_one(int page, Archive arch);
     void load(int page, Archive arch);
     void clean(int page);
     
 private:
-    int max_size;
     std::vector<IMAGE> images;
 };
+
+void load_one(int page, Archive arch, IMAGE * sf_image);
 
 #endif /* display_hpp */

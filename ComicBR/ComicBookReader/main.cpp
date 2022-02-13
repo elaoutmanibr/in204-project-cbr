@@ -13,10 +13,23 @@ using namespace cv;
 
 int main(int, char const**)
 {
+    //the path to the file
+    TextBox txtbx = TextBox(1000,200,"enter path:");
+    std::string path = txtbx.get_text();
+    if (!path.compare("none")) return EXIT_FAILURE;
+    //archive
+    Archive arch = Archive();
+    while(!arch.loadArchivedFiles(path)){
+        TextBox txtbx = TextBox(1000,200,"Try again:");
+        std::string path = txtbx.get_text();
+        std::cout<<path<<"\n";
+        if (!path.compare("none")) return EXIT_FAILURE;
+    }
+    
 
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(sf::VideoMode(1600, 1200)), "Comic Book Reader");
-    
+    //std::cout<<resourcePath()<<"\n";
     sf::Image icon;
     if (!icon.loadFromFile(resourcePath()+"icon.png")) {
         return EXIT_FAILURE;
@@ -41,42 +54,35 @@ int main(int, char const**)
     if (!font.loadFromFile(resourcePath() +"sansation.ttf")) {
         return EXIT_FAILURE;
     }
-    //Affichage des buttons
-    sf::Text text;
-    for (Button button:buttons){
-        window.draw(button.get_shape());
-        text = button.get_text();
-        text.setFont(font);
-        window.draw(text);
-    }
+   
     
     
-    
-    
-    //the path to the file
-    std::string path = "Users/youssefbencheikh/Desktop/Archive.cbz";
-    Archive arch = Archive();
-    arch.loadArchivedFiles(path);
-    cv::Mat a_image;
-    arch.loadOneImage(2,a_image);
-    
-    
+    //mode d'affichage
+    int mode = 1;
     //current page
     int page = 1;
+    //zoom
+    int zoom = 1; //x1 x2 ou x4
+    int x_nav = 0;
+    int y_nav = 0;
+    
     //la Cache
-    CACHE cache(10);
-    
+    CACHE cache;
     cache.load(page,arch);
-    cache.load(2,arch);
-    cache.load(3,arch);
     
+    sf::Texture texture_odd;
+    sf::Texture texture_even;
     
-    sf::Texture texture;
+    sf::Sprite sprite_odd;
+    sf::Sprite sprite_even;
     
     // Start the loop
     while (window.isOpen())
     {
+    
         
+        
+        int oldpage = 0;
         // Process events
         sf::Event event;
         while (window.pollEvent(event))
@@ -85,38 +91,41 @@ int main(int, char const**)
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-
+            if (event.type == sf::Event::KeyPressed){
             // Escape pressed: exit
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+                if (event.key.code == sf::Keyboard::Escape) {
                 window.close();
-            }
+                }
             
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right) {
-                page+=1;
-                if (!texture.loadFromImage(cache.getpage(page))) {
-                    return EXIT_FAILURE;
+                if (event.key.code == sf::Keyboard::Right) {
+                    if(zoom==1)page+=1;//+(mode-1);
+                    else x_nav-=100;
+                //texture.load_texture(mode, cache, page);
+                }
+            
+                if (event.key.code == sf::Keyboard::Left) {
+                    if(zoom==1)page-=1;//+(mode-1);
+                    else x_nav+=100;
+                    //texture.load_texture(mode, cache, page);
+                }
+                if (event.key.code == sf::Keyboard::Up) {
+                    if(zoom==1)page-=1;//+(mode-1);
+                    else y_nav+=100;
+                }
+                if (event.key.code == sf::Keyboard::Down) {
+                    if(zoom==1)page+=1;//+(mode-1);
+                    else y_nav-=100;
                 }
             }
-            
-                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left) {
-                    page+=-1;
-                    if (!texture.loadFromImage(cache.getpage(page))) {
-                        return EXIT_FAILURE;
-                    }
-                }
             //mouse events
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left){
                 if (nxt_pg_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
                     page+=1;
-                    if (!texture.loadFromImage(cache.getpage(page))) {
-                        return EXIT_FAILURE;
-                    }
+                    //texture.load_texture(mode, cache, page);
                 }
                 if (prv_pg_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
                     page-=1;
-                    if (!texture.loadFromImage(cache.getpage(page))) {
-                        return EXIT_FAILURE;
-                    }
+                    //texture.load_texture(mode, cache, page);
                 }
                 if (go_to_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
                     TextBox txtbx = TextBox(500,200,"go to page:");
@@ -124,9 +133,7 @@ int main(int, char const**)
                     if (npage.compare("none")){
                         page = std::stoi(npage);
                     }
-                    if (!texture.loadFromImage(cache.getpage(page))) {
-                        return EXIT_FAILURE;
-                    }
+                    //texture.load_texture(mode, cache, page);
                 }
                 if (open_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
                     TextBox txtbx = TextBox(1000,200,"enter path:");
@@ -135,42 +142,97 @@ int main(int, char const**)
                         path = npath;
                         arch.loadArchivedFiles(path);
                         page=1;
+                        mode=1;
+                        x_nav = 0;
+                        y_nav = 0;
                         cache.load(page,arch);
                     }
-                    if (!texture.loadFromImage(cache.getpage(page))) {
-                        return EXIT_FAILURE;
-                    }
+                    //texture.load_texture(mode, cache, page);
+                }
+                
+                if (sv_to_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                    TextBox txtbx = TextBox(1000,200,"enter path/Name:");
+                    std::string spath = txtbx.get_text();
+                    cv::Mat image;
+                    arch.loadOneImage(page,image);
+                    
+                    if (!imwrite(spath, image)) void;
+                    
+                    
+                    
+                }
+                
+                if (one_two_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                    mode = ((mode)%2)+1;
+                }
+                if (zm_in_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                    zoom += 1;
+                    if (zoom>3) zoom = 3;
+                    //texture.load_texture(mode, cache, page);
+                }
+                if (zm_out_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                    zoom -= 1;
+                    if (zoom<1) zoom = 1;
                 }
             }
-        }
+            
+            if (page<1) page = 1;
+            if (page>arch.getPageNumTotal()) page = arch.getPageNumTotal();
+            
+            // Clear screen
+            window.clear();
+
+            // Draw the sprite
+            window.draw(sprite_odd);
+            if (mode == 2) window.draw(sprite_even);
+            
+            sf::Text text;
+            text.setFillColor(sf::Color::White);
+            // Draw the string
+            //window.draw(text);
+            buttons[5].set_text(std::to_string(page)+"/"+std::to_string(arch.getPageNumTotal()));
+            for (Button button:buttons){
+            window.draw(button.get_shape());
+            text = button.get_text();
+            text.setFont(font);
+            window.draw(text);
+            }
+            // Update the window
+            window.display();
         
         // Load a sprite to display
-        
-        texture.loadFromImage(cache.getpage(page));
-        
-        sf::Sprite sprite(texture);
-        float scale2 = (11/12.f)*(float)window.getSize().y/(float)cache.getpage(page).getSize().y;
-        sprite.setScale(scale2,scale2);
-        sprite.move(800-sprite.getGlobalBounds().width/2.f,0);
-        // Clear screen
-        window.clear();
-
-        // Draw the sprite
-        window.draw(sprite);
-        
-        sf::Text text("Welcome to ComicBookReader, type the path to your CB, or choose one among the recent:", font, 50);
-        text.setFillColor(sf::Color::White);
-        // Draw the string
-        //window.draw(text);
-        buttons[5].set_text(std::to_string(page)+"/"+std::to_string(arch.getPageNumTotal()));
-        for (Button button:buttons){
-        window.draw(button.get_shape());
-        text = button.get_text();
-        text.setFont(font);
-        window.draw(text);
+        if (oldpage!=page){
+            cache.load(page,arch);
+            if (mode==1) texture_odd.loadFromImage(cache.getpage(page));
+            if (mode == 2) {
+                int odd = 2*int((page+1)/2)-1;
+                int even = odd + 1;
+                texture_odd.loadFromImage(cache.getpage(odd));
+                texture_even.loadFromImage(cache.getpage(even));
+            }
+            oldpage=page;
         }
-        // Update the window
-        window.display();
+        sprite_odd = sf::Sprite(texture_odd);
+        if (mode == 2){
+            sprite_even = sf::Sprite(texture_even);
+        }
+        
+        float scale2 = (11/12.f)*(float)window.getSize().y/(float)cache.getpage(page).getSize().y;
+        if (mode == 1) {
+            sprite_odd.setScale(zoom*scale2,zoom*scale2);
+            if(zoom!=1) sprite_odd.move(x_nav,y_nav);
+        }
+        if (mode == 2) {
+            sprite_even.setScale(scale2,scale2);
+            sprite_odd.setScale(scale2,scale2);
+        }
+        if (mode == 1) sprite_odd.move(800-sprite_odd.getGlobalBounds().width/2.f,0);
+        if (mode == 2){
+            sprite_odd.move(400-sprite_odd.getGlobalBounds().width/2.f,0);
+            sprite_even.move(1200-sprite_even.getGlobalBounds().width/2.f,0);
+        }
+        
+        }
     }
     
     //cache.clear();
