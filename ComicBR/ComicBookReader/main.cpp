@@ -26,27 +26,34 @@ int main(int, char const**)
         if (!path.compare("none")) return EXIT_FAILURE;
     }
     
-
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    auto height = desktop.height;
+    auto width = desktop.width;
+    //int height = 1200;
+    
+   
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(sf::VideoMode(1600, 1200)), "Comic Book Reader");
+    sf::RenderWindow window(sf::VideoMode(sf::VideoMode(width, height)), "Comic Book Reader");
     //std::cout<<resourcePath()<<"\n";
     sf::Image icon;
     if (!icon.loadFromFile(resourcePath()+"icon.png")) {
         return EXIT_FAILURE;
     }
     
+    float window_y = (float)window.getSize().y;
+    float window_x = (float)window.getSize().x;
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     
     //Buttons
     std::vector<Button> buttons;
-    Button prv_pg_btn = Button(0, 1100, 190, 100, (std::string)"previous");
-    Button nxt_pg_btn = Button(200, 1100, 190, 100, (std::string)"next");
-    Button zm_in_btn = Button(400, 1100, 190, 100, (std::string)"zoom in");
-    Button zm_out_btn = Button(600, 1100, 190, 100, (std::string)"zoom out");
-    Button one_two_btn = Button(800, 1100, 190, 100, (std::string)"One/Two");
-    Button go_to_btn = Button(1000, 1100, 190, 100, (std::string)"go to");
-    Button sv_to_btn = Button(1200, 1100, 190, 100, (std::string)"save to");
-    Button open_btn = Button(1400, 1100, 200, 100, (std::string)"open");
+    Button prv_pg_btn = Button(0, window_y-100, window_x/8-10, 100, (std::string)"previous");
+    Button nxt_pg_btn = Button(width/8, window_y-100, window_x/8-10, 100, (std::string)"next");
+    Button zm_in_btn = Button(width/4, window_y-100, window_x/8-10, 100, (std::string)"zoom in");
+    Button zm_out_btn = Button(3*window_x/8, window_y-100, window_x/8-10, 100, (std::string)"zoom out");
+    Button one_two_btn = Button(window_x/2, window_y-100, window_x/8-10, 100, (std::string)"One/Two");
+    Button go_to_btn = Button(5*window_x/8, window_y-100, window_x/8-10, 100, (std::string)"go to");
+    Button sv_to_btn = Button(6*window_x/8, window_y-100, window_x/8-10, 100, (std::string)"save to");
+    Button open_btn = Button(7*window_x/8, window_y-100, window_x/8, 100, (std::string)"open");
     buttons.insert(buttons.end(),{prv_pg_btn,nxt_pg_btn,zm_in_btn,zm_out_btn, one_two_btn, go_to_btn, sv_to_btn, open_btn});
     
     //Font
@@ -156,7 +163,7 @@ int main(int, char const**)
                     cv::Mat image;
                     arch.loadOneImage(page,image);
                     
-                    if (!imwrite(spath, image)) void;
+                    imwrite(spath, image);
                     
                     
                     
@@ -217,7 +224,7 @@ int main(int, char const**)
             sprite_even = sf::Sprite(texture_even);
         }
         
-        float scale2 = (11/12.f)*(float)window.getSize().y/(float)cache.getpage(page).getSize().y;
+        float scale2 = (11/12.f)*window_y/(float)cache.getpage(page).getSize().y;
         if (mode == 1) {
             sprite_odd.setScale(zoom*scale2,zoom*scale2);
             if(zoom!=1) sprite_odd.move(x_nav,y_nav);
@@ -226,10 +233,10 @@ int main(int, char const**)
             sprite_even.setScale(scale2,scale2);
             sprite_odd.setScale(scale2,scale2);
         }
-        if (mode == 1) sprite_odd.move(800-sprite_odd.getGlobalBounds().width/2.f,0);
+        if (mode == 1) sprite_odd.move(window_x/2-sprite_odd.getGlobalBounds().width/2.f,0);
         if (mode == 2){
-            sprite_odd.move(400-sprite_odd.getGlobalBounds().width/2.f,0);
-            sprite_even.move(1200-sprite_even.getGlobalBounds().width/2.f,0);
+            sprite_odd.move(window_x/4-sprite_odd.getGlobalBounds().width/2.f,0);
+            sprite_even.move(window_x*3/4-sprite_even.getGlobalBounds().width/2.f,0);
         }
         
         }

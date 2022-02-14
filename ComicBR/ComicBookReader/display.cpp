@@ -22,7 +22,7 @@ void load_one(int page, Archive arch, IMAGE * sf_image){
         cv::Mat a_image;
         arch.loadOneImage(page,a_image);
         CV_IMAGE image = CV_IMAGE(page,a_image);
-        //image.cv_resize();
+        image.cv_resize();
         sf::Image sf_img = image.to_sfml();
         *sf_image = IMAGE(page,sf_img);
 }
