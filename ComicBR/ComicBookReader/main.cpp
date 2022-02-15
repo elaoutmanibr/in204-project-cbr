@@ -46,14 +46,14 @@ int main(int, char const**)
     
     //Buttons
     std::vector<Button> buttons;
-    Button prv_pg_btn = Button(0, window_y-100, window_x/8-10, 100, (std::string)"previous");
-    Button nxt_pg_btn = Button(width/8, window_y-100, window_x/8-10, 100, (std::string)"next");
-    Button zm_in_btn = Button(width/4, window_y-100, window_x/8-10, 100, (std::string)"zoom in");
-    Button zm_out_btn = Button(3*window_x/8, window_y-100, window_x/8-10, 100, (std::string)"zoom out");
-    Button one_two_btn = Button(window_x/2, window_y-100, window_x/8-10, 100, (std::string)"One/Two");
-    Button go_to_btn = Button(5*window_x/8, window_y-100, window_x/8-10, 100, (std::string)"go to");
-    Button sv_to_btn = Button(6*window_x/8, window_y-100, window_x/8-10, 100, (std::string)"save to");
-    Button open_btn = Button(7*window_x/8, window_y-100, window_x/8, 100, (std::string)"open");
+    Button prv_pg_btn = Button(0, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"previous");
+    Button nxt_pg_btn = Button(width/8, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"next");
+    Button zm_in_btn = Button(width/4, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"zoom in");
+    Button zm_out_btn = Button(3*window_x/8, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"zoom out");
+    Button one_two_btn = Button(window_x/2, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"One/Two");
+    Button go_to_btn = Button(5*window_x/8, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"go to");
+    Button sv_to_btn = Button(6*window_x/8, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"save to");
+    Button open_btn = Button(7*window_x/8, window_y-window_y/12, window_x/8, window_y/12, (std::string)"open");
     buttons.insert(buttons.end(),{prv_pg_btn,nxt_pg_btn,zm_in_btn,zm_out_btn, one_two_btn, go_to_btn, sv_to_btn, open_btn});
     
     //Font
@@ -130,11 +130,11 @@ int main(int, char const**)
                     page+=1;
                     //texture.load_texture(mode, cache, page);
                 }
-                if (prv_pg_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                else if (prv_pg_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
                     page-=1;
                     //texture.load_texture(mode, cache, page);
                 }
-                if (go_to_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                else if (go_to_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
                     TextBox txtbx = TextBox(500,200,"go to page:");
                     std::string npage = txtbx.get_text();
                     if (npage.compare("none")){
@@ -142,7 +142,7 @@ int main(int, char const**)
                     }
                     //texture.load_texture(mode, cache, page);
                 }
-                if (open_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                else if (open_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
                     TextBox txtbx = TextBox(1000,200,"enter path:");
                     std::string npath = txtbx.get_text();
                     if (npath.compare("none")){
@@ -157,7 +157,7 @@ int main(int, char const**)
                     //texture.load_texture(mode, cache, page);
                 }
                 
-                if (sv_to_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
+                else if (sv_to_btn.is_pressed(event.mouseButton.x, event.mouseButton.y)){
                     TextBox txtbx = TextBox(1000,200,"enter path/Name:");
                     std::string spath = txtbx.get_text();
                     cv::Mat image;
