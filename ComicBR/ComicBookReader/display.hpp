@@ -1,10 +1,3 @@
-//
-//  display.hpp
-//  ComicBookReader
-//
-//  Created by Youssef Ben Cheikh on 20/1/2022.
-//  Copyright © 2022 Youssef Ben Cheikh. All rights reserved.
-//
 
 #ifndef display_hpp
 #define display_hpp
@@ -15,7 +8,6 @@
 #include "unarr.h"
 #include "archivereader.hpp"
 #include <opencv2/opencv.hpp>
-#include <thread>
 #include <future>
 
 
