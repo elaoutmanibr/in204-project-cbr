@@ -56,7 +56,7 @@ std::string TextBox::get_text(){
                     if (event.text.unicode == '\b'){
                         if(!typed.empty())
                             typed.pop_back();}
-                    else if (event.text.unicode == '\n'){
+                    else if (event.text.unicode == 13){
                         //page = std::stoi(npage);
                         gotopagewind.close();
                         return typed;
