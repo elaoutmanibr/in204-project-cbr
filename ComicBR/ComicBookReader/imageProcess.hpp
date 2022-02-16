@@ -1,15 +1,17 @@
-#include <opencv2/opencv.hpp>
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include "unarr.h"
+
 
 #ifndef imageprocess_hpp
 #define imageprocess_hpp
 
+#include "unarr.h"
+#include "Archive.hpp"
+#include <opencv2/opencv.hpp>
+#include <SFML/Graphics.hpp>
+#include <vector>
 
-class CV_IMAGE {
+class Cv_image {
 public:
-    CV_IMAGE(int n, cv::Mat img){
+    Cv_image(int n, cv::Mat img){
         num = n;
         image = img;
     }
@@ -19,22 +21,33 @@ public:
     cv::Mat get_img(){
         return image;
     }
-    sf::Image to_sfml(){
-        sf::Image img;
-        cv::Mat frameRGBA;
-        cv::cvtColor(image, frameRGBA, cv::COLOR_BGR2RGBA);
-        img.create(frameRGBA.cols, frameRGBA.rows, frameRGBA.ptr());
-        return img;
-    }
-    void cv_resize(){
-        cv::Mat resized;
-        //std::cout<<num<<"empty"<<image.empty()<<"\n";
-        cv::resize(image, resized, cv::Size(), 0.9, 0.9, cv::INTER_LINEAR);
-        image = resized;
-    }
+    sf::Image to_sfml();
+    void cv_resize();
 private:
     int num;
     cv::Mat image;
+};
+
+class Image {
+public:
+    Image(){};
+    Image(int n, sf::Image img){
+        num = n;
+        image = img;
+    }
+    Image(Cv_image img){
+        num = img.get_num();
+        image = img.to_sfml();
+    }
+    int get_num(){
+        return num;
+    }
+    sf::Image get_img(){
+        return image;
+    }
+private:
+    int num;
+    sf::Image image;
 };
 
 

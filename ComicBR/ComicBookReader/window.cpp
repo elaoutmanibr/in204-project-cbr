@@ -1,5 +1,5 @@
 
-#include "window.hpp"
+#include "Window.hpp"
 
 Button::Button(float x, float y, float width, float height, std::string text){
     this->shape.setPosition(sf::Vector2f(x,y));

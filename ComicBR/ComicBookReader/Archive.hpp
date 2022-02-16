@@ -1,6 +1,6 @@
 
-#ifndef archivereader_hpp
-#define archivereader_hpp
+#ifndef archive_hpp
+#define archive_hpp
 
 #include <stdio.h>
 #include <string>
@@ -36,5 +36,5 @@ public:
     
 };
 
-#endif /* archivereader_hpp */
+#endif /* archive_hpp */
 

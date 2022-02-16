@@ -1,31 +1,33 @@
 
 #include "ResourcePath.hpp"
 #include <SFML/Graphics.hpp>
-#include "display.hpp"
+#include "Cache.hpp"
 #include <string>
-#include <filesystem>
-#include "archivereader.hpp"
-#include "window.hpp"
+#include "Archive.hpp"
+#include "Window.hpp"
 #include <vector>
 
 using namespace std;
 using namespace cv;
 
-int main(int, char const**)
+int main(int argc, char * argv[])
 {
+    std::string path;
+    Archive arch = Archive();
+    
     //the path to the file
-    TextBox txtbx = TextBox(1000,200,"enter path:");
-    std::string path = txtbx.get_text();
-    if (!path.compare("none")) return EXIT_FAILURE;
+        TextBox txtbx = TextBox(1000,200,"enter path:");
+        path = txtbx.get_text();
+        if (!path.compare("none")) return EXIT_FAILURE;
     
     // load the file as Archive object
-    Archive arch = Archive();
-    while(!arch.loadArchivedFiles(path)){
-        TextBox txtbx = TextBox(1000,200,"Try again:");
-        std::string path = txtbx.get_text();
-        std::cout<<path<<"\n";
-        if (!path.compare("none")) return EXIT_FAILURE;
-    }
+        
+        while(!arch.loadArchivedFiles(path)){
+            TextBox txtbx = TextBox(1000,200,"Try again:");
+            path = txtbx.get_text();
+            if (!path.compare("none")) return EXIT_FAILURE;
+        }
+   
     
     // Variable height and weight to fit all screens
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -46,14 +48,14 @@ int main(int, char const**)
     
     //Buttons
     std::vector<Button> buttons;
-    Button prv_pg_btn = Button(0, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"previous");
-    Button nxt_pg_btn = Button(width/8, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"next");
-    Button zm_in_btn = Button(width/4, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"zoom in");
-    Button zm_out_btn = Button(3*window_x/8, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"zoom out");
-    Button one_two_btn = Button(window_x/2, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"One/Two");
-    Button go_to_btn = Button(5*window_x/8, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"go to");
-    Button sv_to_btn = Button(6*window_x/8, window_y-window_y/12, window_x/8-10, window_y/12, (std::string)"save to");
-    Button open_btn = Button(7*window_x/8, window_y-window_y/12, window_x/8, window_y/12, (std::string)"open");
+    Button prv_pg_btn = Button(0, 17*window_y/18, window_x/8-10, window_y/18, (std::string)"previous");
+    Button nxt_pg_btn = Button(width/8, 17*window_y/18, window_x/8-10, window_y/18, (std::string)"next");
+    Button zm_in_btn = Button(width/4, 17*window_y/18, window_x/8-10, window_y/18, (std::string)"zoom in");
+    Button zm_out_btn = Button(3*window_x/8, 17*window_y/18, window_x/8-10, window_y/18, (std::string)"zoom out");
+    Button one_two_btn = Button(window_x/2, 17*window_y/18, window_x/8-10, window_y/18, (std::string)"One/Two");
+    Button go_to_btn = Button(5*window_x/8, 17*window_y/18, window_x/8-10, window_y/18, (std::string)"go to");
+    Button sv_to_btn = Button(6*window_x/8, 17*window_y/18, window_x/8-10, window_y/18, (std::string)"save to");
+    Button open_btn = Button(7*window_x/8, 17*window_y/18, window_x/8, window_y/18, (std::string)"open");
     buttons.insert(buttons.end(),{prv_pg_btn,nxt_pg_btn,zm_in_btn,zm_out_btn, one_two_btn, go_to_btn, sv_to_btn, open_btn});
     
     //Font
@@ -76,7 +78,7 @@ int main(int, char const**)
     int y_nav = 0;
     
     //Cache
-    CACHE cache;
+    Cache cache;
     cache.load(page,arch); // load the current page, the next one and the previous one in the cache 
 
 
