@@ -13,8 +13,9 @@ ComicBookReader peut :
 - Afficher deux pages en même temps
 
 **Dependencies**
-Pour comppiler le projet, il faut installer les libraires suivantes : 
+Pour compiler le projet, il faut installer les libraires suivantes : 
 *unarr*, a decompression library : github.com/selmf/unarr
 *SFML* : https://www.sfml-dev.org
 *OpenCV* : https://opencv.org
 
+Le build marche sur eclipse et XCode pour mac. Un ouvrage dir.cbz est fourni avec les fichiers sources.
