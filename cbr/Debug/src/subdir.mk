@@ -4,28 +4,25 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/archivereader.cpp \
-../src/display.cpp \
-../src/imageProcess.cpp \
-../src/imgprocess.cpp \
-../src/main.cpp \
-../src/window.cpp 
+../src/Archive.cpp \
+../src/Cache.cpp \
+../src/ImageProcess.cpp \
+../src/Window.cpp \
+../src/main.cpp 
 
 CPP_DEPS += \
-./src/archivereader.d \
-./src/display.d \
-./src/imageProcess.d \
-./src/imgprocess.d \
-./src/main.d \
-./src/window.d 
+./src/Archive.d \
+./src/Cache.d \
+./src/ImageProcess.d \
+./src/Window.d \
+./src/main.d 
 
 OBJS += \
-./src/archivereader.o \
-./src/display.o \
-./src/imageProcess.o \
-./src/imgprocess.o \
-./src/main.o \
-./src/window.o 
+./src/Archive.o \
+./src/Cache.o \
+./src/ImageProcess.o \
+./src/Window.o \
+./src/main.o 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -40,7 +37,7 @@ src/%.o: ../src/%.cpp src/subdir.mk
 clean: clean-src
 
 clean-src:
-	-$(RM) ./src/archivereader.d ./src/archivereader.o ./src/display.d ./src/display.o ./src/imageProcess.d ./src/imageProcess.o ./src/imgprocess.d ./src/imgprocess.o ./src/main.d ./src/main.o ./src/window.d ./src/window.o
+	-$(RM) ./src/Archive.d ./src/Archive.o ./src/Cache.d ./src/Cache.o ./src/ImageProcess.d ./src/ImageProcess.o ./src/Window.d ./src/Window.o ./src/main.d ./src/main.o
 
 .PHONY: clean-src
 

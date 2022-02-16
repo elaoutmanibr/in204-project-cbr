@@ -1,5 +1,6 @@
-src/main.o: ../src/main.cpp ../src/ResourcePath.hpp ../src/display.hpp \
- ../src/imageProcess.hpp /usr/local/include/opencv4/opencv2/opencv.hpp \
+src/main.o: ../src/main.cpp ../src/ResourcePath.hpp ../src/Cache.hpp \
+ ../src/ImageProcess.hpp ../src/Archive.hpp \
+ /usr/local/include/opencv4/opencv2/opencv.hpp \
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/local/include/opencv4/opencv2/core.hpp \
  /usr/local/include/opencv4/opencv2/core/cvdef.h \
@@ -104,13 +105,15 @@ src/main.o: ../src/main.cpp ../src/ResourcePath.hpp ../src/display.hpp \
  /usr/local/include/opencv4/opencv2/video.hpp \
  /usr/local/include/opencv4/opencv2/video/tracking.hpp \
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
- ../src/archivereader.hpp ../src/window.hpp
+ ../src/Window.hpp
 
 ../src/ResourcePath.hpp:
 
-../src/display.hpp:
+../src/Cache.hpp:
 
-../src/imageProcess.hpp:
+../src/ImageProcess.hpp:
+
+../src/Archive.hpp:
 
 /usr/local/include/opencv4/opencv2/opencv.hpp:
 
@@ -322,6 +325,4 @@ src/main.o: ../src/main.cpp ../src/ResourcePath.hpp ../src/display.hpp \
 
 /usr/local/include/opencv4/opencv2/video/background_segm.hpp:
 
-../src/archivereader.hpp:
-
-../src/window.hpp:
+../src/Window.hpp:
